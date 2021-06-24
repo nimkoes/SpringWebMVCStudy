@@ -16,39 +16,31 @@
         <param-value>me.nimkoes.sample.MyAppConfig</param-value>
     </context-param>
 
-    <!-- 일반 Servlet 을 등록 하듯 Filter 를 등록 한다. -->
-    <filter>
-        <filter-name>MySampleFilter</filter-name>
-        <filter-class>me.nimkoes.sample.MyFilter</filter-class>
-    </filter>
-
-    <!-- 모든 또는 일부 Servlet 에 대해 url-pattern 을 사용하여 Filter 를 적용하도록 설정할 수 있다. -->
-    <filter-mapping>
-        <filter-name>MySampleFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
     <!-- Spring 이 제공하는 Listener 등록 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <!-- Spring Web MVC 사용하기 위한 DispatcherServlet servlet 등록 -->
     <servlet>
-        <servlet-name>MySample</servlet-name>
-        <servlet-class>me.nimkoes.sample.MyServlet</servlet-class>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+        <!-- ContextLoaderListener 를 사용하기 위해 context-param 으로 parameter 를 정의한 것처럼 -->
+        <!-- DispatcherServlet 을 사용하기 위해 init-param 으로 parameter 를 정의할 수 있다.      -->
+        <init-param>
+            <param-name>contextClass</param-name>
+            <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+        </init-param>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>me.nimkoes.sample.MyWebConfig</param-value>  <!-- Servlet WebApplicationContext 를 만들 때 사용할 설정 파일 -->
+        </init-param>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>MySample</servlet-name>
-        <url-pattern>/Hello</url-pattern>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
 
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.htm</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-        <welcome-file>default.html</welcome-file>
-        <welcome-file>default.htm</welcome-file>
-        <welcome-file>default.jsp</welcome-file>
-    </welcome-file-list>
 </web-app>
